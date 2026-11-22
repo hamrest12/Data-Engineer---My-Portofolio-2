@@ -1,0 +1,118 @@
+
+version: 2
+
+models:
+  - name: dim_customers
+    description: Dimension table yang menyimpan informasi unik setiap customer
+      untuk analisis transaksi Olist.
+    columns:
+      - name: customer_id
+        description: Unique identifier untuk customer.
+        data_tests:
+          - not_null
+          - unique
+      - name: customer_unique_id
+        description: Identifier unik customer lintas transaksi.
+
+  - name: dim_products
+    description: Dimension table yang menyimpan informasi produk
+      untuk analisis penjualan.
+    columns:
+      - name: product_id
+        description: Unique identifier untuk produk.
+        data_tests:
+          - not_null
+          - unique
+      - name: product_category_name
+        description: Kategori produk.
+
+  - name: dim_sellers
+    description: Dimension table yang menyimpan informasi seller
+      yang menjual produk di marketplace Olist.
+    columns:
+      - name: seller_id
+        description: Unique identifier untuk seller.
+        data_tests:
+          - not_null
+          - unique
+
+  - name: dim_date
+    description: Calendar dimension untuk analisis transaksi berdasarkan waktu.
+    columns:
+      - name: date_day
+        description: Tanggal kalender.
+        data_tests:
+          - not_null
+          - unique
+      - name: year
+        description: Tahun transaksi.
+
+      - name: month
+        description: Nomor bulan.
+
+  - name: fct_orders
+    description: Fact table dengan grain satu baris untuk setiap order.
+    columns:
+      - name: order_id
+        description: Unique identifier untuk order.
+        data_tests:
+          - not_null
+          - unique
+
+      - name: customer_id
+        description: Customer yang melakukan order.
+        data_tests:
+          - not_null
+          - relationships:
+             arguments:
+              to: ref('dim_customers')
+              field: customer_id
+
+      - name: order_purchase_date
+        data_tests:
+          - not_null
+
+  - name: fct_order_items
+    description: "One row per order item"
+    columns:
+      - name: order_id
+        data_tests:
+          - not_null
+          - relationships:
+             arguments:
+              to: ref('fct_orders')
+              field: order_id
+      - name: order_item_id
+        data_tests:
+          - not_null
+      - name: product_id
+        data_tests:
+          - not_null
+      - name: seller_id
+        data_tests:
+          - not_null
+
+  - name: fct_payments
+    description: "One row per payment record"
+    columns:
+      - name: order_id
+        data_tests:
+          - not_null
+          - relationships:
+             arguments:
+              to: ref('fct_orders')
+              field: order_id
+      - name: payment_sequential
+        data_tests:
+          - not_null
+
+  - name: fct_reviews
+    description: "One row per review record"
+    columns:
+      - name: review_id
+        data_tests:
+          - not_null
+      - name: order_id
+        data_tests:
+          - not_null
+

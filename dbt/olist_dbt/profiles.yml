@@ -1,0 +1,22 @@
+olist_dbt:
+  target: dev
+  outputs:
+    dev:
+      type: clickhouse
+      schema: olist_clickhouse
+      host: clickhouse
+      port: 8123
+      user: clickhouse
+      password: adminpass123
+      secure: false
+      threads: 4
+    
+    local:
+      type: clickhouse
+      schema: olist_clickhouse
+      host: localhost
+      port: 8123
+      user: clickhouse
+      password: adminpass123
+      secure: false
+      threads: 4

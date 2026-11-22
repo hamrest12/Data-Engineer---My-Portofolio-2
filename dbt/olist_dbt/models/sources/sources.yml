@@ -1,0 +1,35 @@
+
+version: 2
+
+sources:
+  - name: olist_bronze
+    description: "Raw Olist data loaded into ClickHouse Bronze"
+    database: olist_clickhouse
+
+    tables:
+      - name: bronze_orders
+        description: "Raw order header data"
+
+      - name: bronze_order_items
+        description: "Raw order item details"
+
+      - name: bronze_customers
+        description: "Raw customer data"
+
+      - name: bronze_products
+        description: "Raw product data"
+
+      - name: bronze_sellers
+        description: "Raw seller data"
+
+      - name: bronze_order_payments
+        description: "Raw payment records"
+
+      - name: bronze_order_reviews
+        description: "Raw order review records"
+
+      - name: bronze_geolocation
+        description: "Raw Brazilian geolocation data"
+
+      - name: bronze_category_translation
+        description: "Product category translations"
